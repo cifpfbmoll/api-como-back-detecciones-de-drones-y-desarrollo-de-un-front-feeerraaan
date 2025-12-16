@@ -1,21 +1,24 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/FpM8eaVc)
 # API REST de Detección de Drones con CodeIgniter 4
 
-API REST que funciona como orquestador central para un sistema de detección de drones Wi-Fi. Basado en el artículo [Detección de Drones Wi-Fi](https://medium.com/@noko_kelevra/detecci%C3%B3n-de-drones-wi-fi-64b9cbdef2a6).
+> API REST que funciona como orquestador central para un sistema de detección de drones Wi-Fi. Basado en el artículo [Detección de Drones Wi-Fi](https://medium.com/@noko_kelevra/detecci%C3%B3n-de-drones-wi-fi-64b9cbdef2a6).
 
-## Descripción
+## 📋 Descripción
 
 Esta API tiene dos responsabilidades principales:
 1. **Recibir datos de sensores**: Los scripts Python de detección envían información sobre direcciones MAC detectadas.
 2. **Servir datos al frontend**: Proporciona endpoints para un futuro panel de control/dashboard.
 
-## Requisitos del Sistema
+---
+
+## 🛠️ Requisitos del Sistema
 
 - PHP 8.1 o superior
 - Composer
 - Extensiones PHP: `intl`, `mbstring`, `sqlite3`
 
-## Instalación
+---
+
+## 📦 Instalación
 
 ### 1. Clonar el repositorio
 ```bash
@@ -69,7 +72,9 @@ php spark serve
 
 El servidor estará disponible en: `http://localhost:8080`
 
-## Estructura de la Base de Datos
+---
+
+## 📊 Estructura de la Base de Datos
 
 ### Tabla `manufacturers`
 | Columna | Tipo | Descripción |
@@ -91,7 +96,9 @@ El servidor estará disponible en: `http://localhost:8080`
 | detected_at | DATETIME | Fecha/hora de detección |
 | created_at | DATETIME | Fecha de creación del registro |
 
-## Endpoints de la API
+---
+
+## 🔌 Endpoints de la API
 
 Base URL: `http://localhost:8080/api/v1`
 
@@ -197,7 +204,28 @@ Estadísticas para el dashboard.
 }
 ```
 
-## Fabricantes Precargados (Seeder)
+---
+
+## 📷 Pruebas y Demostraciones
+
+### Servidor Corriendo
+![Servidor Corriendo](images/servidorCorriendo.png)
+
+### Colección Postman
+![Colección Postman](images/mostrarColeccionPostman.png)
+
+### GET Manufacturers - Funcionando
+![GET Manufacturers](images/getManufacturersFuncionando.png)
+
+### POST Detections - Funcionando
+![POST Detections](images/postDetectionsFuncionando.png)
+
+### GET Detections - Funcionando
+![GET Detections](images/getDetectionsFuncionando.png)
+
+---
+
+## 📝 Fabricantes Precargados (Seeder)
 
 El seeder incluye OUIs de los siguientes fabricantes:
 - DJI Technology Co., Ltd. (varios OUIs)
@@ -206,11 +234,15 @@ El seeder incluye OUIs de los siguientes fabricantes:
 - Espressif Inc. (común en drones DIY)
 - Raspberry Pi Foundation (drones DIY)
 
-## Colección Postman
+---
+
+## 📮 Colección Postman
 
 Importa el archivo `Drone_Detection_API.postman_collection.json` en Postman para probar todos los endpoints.
 
-## Comandos Útiles
+---
+
+## ⚙️ Comandos Útiles
 
 ```bash
 # Ejecutar migraciones
@@ -229,12 +261,59 @@ php spark serve
 php spark routes
 ```
 
-## Tecnologías
+---
+
+## 🚀 Tecnologías Utilizadas
 
 - **Framework**: CodeIgniter 4.6
 - **Base de datos**: SQLite3
-- **PHP**: 8.1+
+- **Lenguaje**: PHP 8.1+
+- **Testing**: PHPUnit
+- **Control de versiones**: Git
 
-## Licencia
+---
 
-Proyecto educativo - Desarrollo en Entorno Servidor - 2º Grado en Ingeniería Informática
+## 💡 Ejemplos de Uso Avanzado
+
+### Crear múltiples detecciones
+```bash
+curl -X POST http://localhost:8080/api/v1/detections \
+  -H "Content-Type: application/json" \
+  -d '{
+    "mac": "AA:BB:CC:DD:EE:FF",
+    "rssi": -65,
+    "sensor_location": "Parking Oeste",
+    "timestamp": "2024-01-20T14:30:00Z"
+  }'
+```
+
+### Filtrar detecciones por fabricante
+```bash
+curl "http://localhost:8080/api/v1/detections?manufacturer_id=1&page=1&limit=10"
+```
+
+### Filtrar por ubicación
+```bash
+curl "http://localhost:8080/api/v1/detections?location=Edificio%20A"
+```
+
+---
+
+## 🐛 Troubleshooting
+
+### Error: "database.sqlite not found"
+- Verifica que la ruta en `.env` sea absoluta: `/ruta/completa/writable/database.sqlite`
+- Crea el archivo manualmente: `touch writable/database.sqlite`
+
+### Error: "SQLSTATE[HY000]: General error"
+- Asegúrate de que la carpeta `writable/` tiene permisos de escritura
+- En Windows: Haz clic derecho > Propiedades > Seguridad > Permisos completos
+
+### La API no responde
+- Verifica que el servidor está corriendo: `php spark serve`
+- Comprueba que no hay otro servicio en el puerto 8080
+- Revisa los logs: `tail -f writable/logs/log-*.php`
+
+---
+
+**Fecha de entrega**: Diciembre 2025
